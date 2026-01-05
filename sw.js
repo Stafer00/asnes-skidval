@@ -1,6 +1,8 @@
-self.addEventListener('install',e=>{
-e.waitUntil(caches.open('asnes-pwa').then(c=>c.addAll(['index.html','manifest.json'])))
-});
-self.addEventListener('fetch',e=>{
-e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request)))
-});
+{
+  "name": "Åsnes skidval",
+  "short_name": "Åsnes skidval",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f5f5f7",
+  "theme_color": "#2e7d32"
+}
