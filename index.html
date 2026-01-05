@@ -25,7 +25,22 @@ input,button{width:100%;padding:12px;font-size:16px;margin-top:6px}
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
+<h2>Välj modell</h2>
 
+<label>
+  <input type="checkbox" class="model" value="Amundsen BC" checked>
+  Amundsen BC
+</label>
+
+<label>
+  <input type="checkbox" class="model" value="Nansen BC" checked>
+  Nansen BC
+</label>
+
+<label>
+  <input type="checkbox" class="model" value="Cecilie Skog BC" checked>
+  Cecilie Skog BC
+</label>
 const skis = [
   {model:"Amundsen BC",ski:180,minL:165,maxL:175,minW:55,maxW:70},
   {model:"Amundsen BC",ski:190,minL:175,maxL:185,minW:65,maxW:85},
