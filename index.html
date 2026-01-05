@@ -68,6 +68,47 @@ function calculate() {
     return;
   }
 
+  // Hämta valda modeller
+  const selectedModels = Array.from(
+    document.querySelectorAll(".model:checked")
+  ).map(cb => cb.value);
+
+  if (selectedModels.length === 0) {
+    resultDiv.innerHTML = "<p>Välj minst en modell.</p>";
+    return;
+  }
+
+  // Filtrera skidor på valda modeller
+  const filteredSkis = skis.filter(s =>
+    selectedModels.includes(s.model)
+  );
+
+  filteredSkis.forEach(s => {
+    s.score =
+      Math.abs(((s.minL + s.maxL) / 2) - l) +
+      Math.abs(((s.minW + s.maxW) / 2) - w);
+  });
+
+  const top = filteredSkis
+    .slice()
+    .sort((a, b) => a.score - b.score)
+    .slice(0, 3);
+
+  resultDiv.innerHTML = "";
+
+  ["best", "second", "third"].forEach((cls, i) => {
+    const s = top[i];
+    if (!s) return;
+
+    resultDiv.innerHTML += `
+      <div class="card ${cls}">
+        <strong>${i + 1}:a val</strong><br>
+        ${s.model}<br>
+        Skidlängd: ${s.ski} cm
+      </div>`;
+  });
+}
+
   skis.forEach(s => {
     s.score =
       Math.abs(((s.minL + s.maxL) / 2) - l) +
