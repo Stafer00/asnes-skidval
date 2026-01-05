@@ -6,79 +6,96 @@
 <title>Åsnes skidval</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2e7d32">
+
 <style>
-body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f5f5f7;padding:16px}
-h1{font-size:22px}
-label{display:block;margin-top:12px}
+body {
+  font-family:-apple-system,BlinkMacSystemFont,sans-serif;
+  background:#f5f5f7;
+  padding:16px;
+}
+h1 { font-size:22px; }
+h2 { margin-top:20px; }
+
+label {
+  display:flex;
+  align-items:center;
+  margin-top:10px;
+}
+
 input[type="number"], button {
-  width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  margin-top: 6px;
+  width:100%;
+  padding:12px;
+  font-size:16px;
+  margin-top:6px;
 }
 
 input[type="checkbox"] {
-  width: auto;
-  margin-right: 8px;
+  width:auto;
+  margin-right:8px;
 }
-.card{margin-top:12px;padding:12px;border-radius:8px}
-.best{background:#c6efce}.second{background:#ffeb9c}.third{background:#fce4d6}
+
+.card {
+  margin-top:12px;
+  padding:12px;
+  border-radius:8px;
+}
+
+.best   { background:#c6efce; }
+.second { background:#ffeb9c; }
+.third  { background:#fce4d6; }
 </style>
 </head>
+
 <body>
+
 <h1>Åsnes skidrekommendation</h1>
-<label>Längd (cm)</label><input type="number" id="length">
-<label>Vikt (kg)</label><input type="number" id="weight">
+
+<h2>Välj modell</h2>
+<label><input type="checkbox" class="model" value="Amundsen BC" checked> Amundsen BC</label>
+<label><input type="checkbox" class="model" value="Nansen BC" checked> Nansen BC</label>
+<label><input type="checkbox" class="model" value="Cecilie Skog BC" checked> Cecilie Skog BC</label>
+
+<label>Längd (cm)</label>
+<input type="number" id="length">
+
+<label>Vikt (kg)</label>
+<input type="number" id="weight">
+
 <button onclick="calculate()">Visa rekommendation</button>
+
 <div id="result"></div>
+
 <script>
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js');
 }
-<h2>Välj modell</h2>
 
-<label>
-  <input type="checkbox" class="model" value="Amundsen BC" checked>
-  Amundsen BC
-</label>
-
-<label>
-  <input type="checkbox" class="model" value="Nansen BC" checked>
-  Nansen BC
-</label>
-
-<label>
-  <input type="checkbox" class="model" value="Cecilie Skog BC" checked>
-  Cecilie Skog BC
-</label>
 const skis = [
-  {model:"Amundsen BC",ski:180,minL:165,maxL:175,minW:55,maxW:70},
-  {model:"Amundsen BC",ski:190,minL:175,maxL:185,minW:65,maxW:85},
-  {model:"Amundsen BC",ski:200,minL:185,maxL:195,minW:80,maxW:100},
-  {model:"Amundsen BC",ski:210,minL:195,maxL:205,minW:95,maxW:115},
-  {model:"Nansen BC",ski:180,minL:160,maxL:170,minW:50,maxW:65},
-  {model:"Nansen BC",ski:190,minL:170,maxL:180,minW:60,maxW:80},
-  {model:"Nansen BC",ski:200,minL:180,maxL:190,minW:75,maxW:95},
-  {model:"Nansen BC",ski:210,minL:190,maxL:200,minW:90,maxW:110},
-  {model:"Cecilie Skog BC",ski:170,minL:155,maxL:165,minW:45,maxW:60},
-  {model:"Cecilie Skog BC",ski:180,minL:165,maxL:175,minW:55,maxW:70},
-  {model:"Cecilie Skog BC",ski:190,minL:175,maxL:185,minW:65,maxW:85}
+  {model:"Amundsen BC", ski:180, minL:165, maxL:175, minW:55, maxW:70},
+  {model:"Amundsen BC", ski:190, minL:175, maxL:185, minW:65, maxW:85},
+  {model:"Amundsen BC", ski:200, minL:185, maxL:195, minW:80, maxW:100},
+  {model:"Amundsen BC", ski:210, minL:195, maxL:205, minW:95, maxW:115},
+
+  {model:"Nansen BC", ski:180, minL:160, maxL:170, minW:50, maxW:65},
+  {model:"Nansen BC", ski:190, minL:170, maxL:180, minW:60, maxW:80},
+  {model:"Nansen BC", ski:200, minL:180, maxL:190, minW:75, maxW:95},
+  {model:"Nansen BC", ski:210, minL:190, maxL:200, minW:90, maxW:110},
+
+  {model:"Cecilie Skog BC", ski:170, minL:155, maxL:165, minW:45, maxW:60},
+  {model:"Cecilie Skog BC", ski:180, minL:165, maxL:175, minW:55, maxW:70},
+  {model:"Cecilie Skog BC", ski:190, minL:175, maxL:185, minW:65, maxW:85}
 ];
 
 function calculate() {
-  const lengthInput = document.getElementById("length");
-  const weightInput = document.getElementById("weight");
-  const resultDiv   = document.getElementById("result");
-
-  const l = Number(lengthInput.value);
-  const w = Number(weightInput.value);
+  const l = Number(document.getElementById("length").value);
+  const w = Number(document.getElementById("weight").value);
+  const resultDiv = document.getElementById("result");
 
   if (!l || !w) {
     resultDiv.innerHTML = "";
     return;
   }
 
-  // Hämta valda modeller
   const selectedModels = Array.from(
     document.querySelectorAll(".model:checked")
   ).map(cb => cb.value);
@@ -88,18 +105,15 @@ function calculate() {
     return;
   }
 
-  // Filtrera skidor på valda modeller
-  const filteredSkis = skis.filter(s =>
-    selectedModels.includes(s.model)
-  );
+  const filtered = skis.filter(s => selectedModels.includes(s.model));
 
-  filteredSkis.forEach(s => {
+  filtered.forEach(s => {
     s.score =
       Math.abs(((s.minL + s.maxL) / 2) - l) +
       Math.abs(((s.minW + s.maxW) / 2) - w);
   });
 
-  const top = filteredSkis
+  const top = filtered
     .slice()
     .sort((a, b) => a.score - b.score)
     .slice(0, 3);
@@ -118,30 +132,7 @@ function calculate() {
       </div>`;
   });
 }
-
-  skis.forEach(s => {
-    s.score =
-      Math.abs(((s.minL + s.maxL) / 2) - l) +
-      Math.abs(((s.minW + s.maxW) / 2) - w);
-  });
-
-  const top = skis
-    .slice()
-    .sort((a, b) => a.score - b.score)
-    .slice(0, 3);
-
-  resultDiv.innerHTML = "";
-
-  ["best", "second", "third"].forEach((cls, i) => {
-    const s = top[i];
-    resultDiv.innerHTML += `
-      <div class="card ${cls}">
-        <strong>${i + 1}:a val</strong><br>
-        ${s.model}<br>
-        Skidlängd: ${s.ski} cm
-      </div>`;
-  });
-}
 </script>
+
 </body>
 </html>
