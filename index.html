@@ -121,13 +121,32 @@ document.getElementById("searchBtn").addEventListener("click", () => {
     const s = top[i];
     if (!s) return;
 
-    result.innerHTML += `
-      <div class="card ${cls}">
-        <strong>${i + 1}:a val</strong><br>
-        ${s.model}<br>
-        Skidlängd: ${s.ski} cm
-      </div>
-    `;
+    const idealLength = (s.minL + s.maxL) / 2;
+const idealWeight = (s.minW + s.maxW) / 2;
+
+const lengthDiff = Math.round(l - idealLength);
+const weightDiff = Math.round(w - idealWeight);
+
+let explanation = "Mycket bra match";
+if (Math.abs(lengthDiff) > 5 || Math.abs(weightDiff) > 5) {
+  explanation = "Bra match";
+}
+if (Math.abs(lengthDiff) > 10 || Math.abs(weightDiff) > 10) {
+  explanation = "Möjlig match";
+}
+
+result.innerHTML += `
+  <div class="card ${cls}">
+    <strong>${i + 1}:a val</strong><br>
+    ${s.model}<br>
+    <strong>Skidlängd:</strong> ${s.ski} cm<br>
+    <em>${explanation}</em><br>
+    <small>
+      Kroppslängd: ${lengthDiff >= 0 ? "+" : ""}${lengthDiff} cm från ideal<br>
+      Vikt: ${weightDiff >= 0 ? "+" : ""}${weightDiff} kg från ideal
+    </small>
+  </div>
+`;
   });
 });
 </script>
