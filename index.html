@@ -55,7 +55,10 @@ input[type="checkbox"] {
 <label><input type="checkbox" class="model" value="Amundsen BC" checked> Amundsen BC</label>
 <label><input type="checkbox" class="model" value="Nansen BC" checked> Nansen BC</label>
 <label><input type="checkbox" class="model" value="Cecilie Skog BC" checked> Cecilie Skog BC</label>
-
+<label>
+  <input type="checkbox" class="model" value="Breidablikk BC" checked>
+  Breidablikk BC
+</label>
 <label>Längd (cm)</label>
 <input type="number" id="length">
 
@@ -83,7 +86,13 @@ const skis = [
 
   {model:"Cecilie Skog BC", ski:170, minL:155, maxL:165, minW:45, maxW:60},
   {model:"Cecilie Skog BC", ski:180, minL:165, maxL:175, minW:55, maxW:70},
-  {model:"Cecilie Skog BC", ski:190, minL:175, maxL:185, minW:65, maxW:85}
+  {model:"Cecilie Skog BC", ski:190, minL:175, maxL:185, minW:65, maxW:85},
+
+  {model:"Breidablikk BC", ski:170, minL:150, maxL:160, minW:0,  maxW:60},
+{model:"Breidablikk BC", ski:180, minL:160, maxL:170, minW:60, maxW:75},
+{model:"Breidablikk BC", ski:190, minL:170, maxL:180, minW:70, maxW:85},
+{model:"Breidablikk BC", ski:200, minL:180, maxL:190, minW:80, maxW:95},
+{model:"Breidablikk BC", ski:210, minL:190, maxL:200, minW:95, maxW:999}
 ];
 
 document.getElementById("searchBtn").addEventListener("click", () => {
